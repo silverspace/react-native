@@ -172,14 +172,15 @@ public class WebSocketModule extends ReactContextBaseJavaModule {
         } catch (IOException e) {
           notifyWebSocketFailed(id, e.getMessage());
           return;
-        }
-        try {
-          response.source().close();
-        } catch (IOException e) {
-          FLog.e(
-            ReactConstants.TAG,
-            "Could not close BufferedSource for WebSocket id " + id,
-            e);
+        } finally {
+          try {
+            response.source().close();
+          } catch (IOException e) {
+            FLog.e(
+                    ReactConstants.TAG,
+                    "Could not close BufferedSource for WebSocket id " + id,
+                    e);
+          }
         }
 
         WritableMap params = Arguments.createMap();
